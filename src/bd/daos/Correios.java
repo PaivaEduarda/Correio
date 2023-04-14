@@ -23,8 +23,8 @@ public class Correios
         return retorno;
     }
 
-    public static void incluir(Correios correios) throws Exception {
-        if (correios == null)
+    public static void incluir(Correio correio) throws Exception {
+        if (correio == null)
             throw new Exception("entrega ainda não cadastrada!");
         try
         {
@@ -35,12 +35,12 @@ public class Correios
                     "(?,?,?,?,?,?)";
             BDSQLServer.COMANDO.prepareStatement(sql);
 
-            BDSQLServer.COMANDO.setString(1, correios.getCPF());
-            BDSQLServer.COMANDO.setString(2, correios.getNomeRemetente());
-            BDSQLServer.COMANDO.setString(3, correios.getNomeDestinatario());
-            BDSQLServer.COMANDO.setString(4, correios.getCep());
-            BDSQLServer.COMANDO.setString(5, correios.getComplemento());
-            BDSQLServer.COMANDO.setString(6, correios.getNmrCasa());
+            BDSQLServer.COMANDO.setString(1, correio.getCPF());
+            BDSQLServer.COMANDO.setString(2, correio.getNomeRemetente());
+            BDSQLServer.COMANDO.setString(3, correio.getNomeDestinatario());
+            BDSQLServer.COMANDO.setString(4, correio.getCep());
+            BDSQLServer.COMANDO.setString(5, correio.getComplemento());
+            BDSQLServer.COMANDO.setInt(6, correio.getNmrCasa());
 
             BDSQLServer.COMANDO.executeUpdate();
             BDSQLServer.COMANDO.commit();
@@ -72,11 +72,11 @@ public class Correios
             throw new Exception("Erro ao excluir a entrega!");
         }
     }
-    public static void alterar(Correios correios) throws  Exception
+    public static void alterar(Correio correio) throws  Exception
     {
-        if(correios==null)
+        if(correio==null)
             throw new Exception("Informações não fornecidas. Verifique novamente!");
-        if(!(cadastrado(correios.getCPF())))
+        if(!(cadastrado(correio.getCPF())))
             throw new Exception("CPF não cadastrado!");
         try {
             String sql = "";
@@ -88,11 +88,11 @@ public class Correios
                     "nmrCasa = ?" +
                     "WHERE idCPF = ?;";
             BDSQLServer.COMANDO.prepareStatement(sql);
-            BDSQLServer.COMANDO.setString(1, correios.getNomeRemetente());
-            BDSQLServer.COMANDO.setString(2, correios.getNomeDestinatario());
-            BDSQLServer.COMANDO.setString(3, correios.getCep());
-            BDSQLServer.COMANDO.setString(4, correios.getComplemento());
-            BDSQLServer.COMANDO.setInt(5, correios.getNmrCasa());
+            BDSQLServer.COMANDO.setString(1, correio.getNomeRemetente());
+            BDSQLServer.COMANDO.setString(2, correio.getNomeDestinatario());
+            BDSQLServer.COMANDO.setString(3, correio.getCep());
+            BDSQLServer.COMANDO.setString(4, correio.getComplemento());
+            BDSQLServer.COMANDO.setInt(   5, correio.getNmrCasa());
 
             BDSQLServer.COMANDO.executeUpdate();
             BDSQLServer.COMANDO.commit();
@@ -104,9 +104,9 @@ public class Correios
         }
     }
 
-    public static Correios getCorreio(String cpf) throws Exception
+    public static Correio getCorreio(String cpf) throws Exception
     {
-        Correios correios;
+        Correio correio;
         try {
             String sql = "";
 
@@ -118,18 +118,18 @@ public class Correios
 
             MeuResultSet resultSet = (MeuResultSet) BDSQLServer.COMANDO.executeQuery();
 
-            correios = new Correios(resultSet.getString("idCPF"),
+            correio = new Correio(resultSet.getString("idCPF"),
                     resultSet.getString("nomeRemetente"),
                     resultSet.getString("nomeDestinatario"),
                     resultSet.getString("cep"),
                     resultSet.getString("complemento"),
-                    resultSet.getString("nmrCasa"));
+                    resultSet.getInt("nmrCasa"));
         }
         catch (SQLException erro)
         {
             throw new Exception("Erro ao procurar a entrega!");
         }
-        return correios;
+        return correio;
     }
     public static MeuResultSet getCorreio() throws Exception
     {

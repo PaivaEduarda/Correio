@@ -1,5 +1,4 @@
 package bd.dbos;
-
 public class Correio implements Cloneable
 {
     private String cpf;
@@ -10,7 +9,7 @@ public class Correio implements Cloneable
     private int nmrCasa;
 
 
-    public void setCPF(string cpf) throws Exception
+    public void setCPF(String cpf) throws Exception
     {
         if(cpf.length() != 11)
             throw new Exception("CPF inválido");
@@ -20,7 +19,7 @@ public class Correio implements Cloneable
 
         this.cpf = cpf;
     }
-    public void setCEP(string cep) throws Exception
+    public void setCEP(String cep) throws Exception
     {
         if(cep.length() != 8)
             throw new Exception("CEP inválido");
@@ -82,12 +81,12 @@ public class Correio implements Cloneable
 
     public String getNomeDestinatario()
     {
-        return this.NomeDestinatario;
+        return this.nomeDestinatario;
     }
 
     public String getNomeRemetente()
     {
-        return this.NomeRemetente;
+        return this.nomeRemetente;
     }
 
     public String getCep()
@@ -100,7 +99,7 @@ public class Correio implements Cloneable
         return this.complemento;
     }
 
-    public String getNmrCasa()
+    public Integer getNmrCasa()
     {
         return this.nmrCasa;
     }
@@ -122,7 +121,7 @@ public class Correio implements Cloneable
         ret+="nome do Remetente: "+this.nomeRemetente+"\n";
         ret+="nome do Destinatario: "+this.nomeDestinatario+"\n";
         ret+="Cep do Destinatário: "+this.cep+"\n";
-        ret+="Complemento: "+this.logradouro+"\n";
+        ret+="Complemento: "+this.complemento+"\n";
         ret+="Número da Casa: "+this.nmrCasa;
 
         return ret;
@@ -148,7 +147,7 @@ public class Correio implements Cloneable
 
         if(!(this.complemento.equals(correio.complemento))) return false;
 
-        if(!(this.nmrCasa.equals(correio.nmrCasa))) return false;
+        if(this.nmrCasa != correio.nmrCasa) return false;
 
         return true;
     }
@@ -161,7 +160,7 @@ public class Correio implements Cloneable
         ret = ret * 13 + this.nomeDestinatario.hashCode();
         ret = ret * 13 + this.cep.hashCode();
         ret = ret * 13 + this.complemento.hashCode();
-        ret = ret * 13 + this.nmrCasa.hashCode();
+        ret = ret * 13 + Integer.valueOf(this.nmrCasa).hashCode();
 
         return ret;
     }
