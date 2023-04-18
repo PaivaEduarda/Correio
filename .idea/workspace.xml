@@ -5,14 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fbdf2484-2f6f-4661-8418-28434e12e013" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Correio.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Correio.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Endereco/ClienteWS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Endereco/ClienteWS.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Janela.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Janela.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Programa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Programa.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bd/daos/Correios.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bd/daos/Correios.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bd/dbos/Correio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bd/dbos/Correio.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +28,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/u22125/Documents/GitHub/Correio/src/Endereco/jackson-all-1.9.0.jar",
+    "last_opened_file_path": "C:/Users/u22125/Documents/GitHub/Correio",
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.0"

@@ -14,7 +14,18 @@ public class Janela extends JFrame {
     private JPanel atualizar          = new JPanel();
     private JPanel deletar            = new JPanel();
 
-    private JTextField teste = new JTextField("Hello word!");
+    private JTextField teste = new JTextField();
+
+    private JButton procurarRemetente = new JButton("Procurar");
+
+    private JLabel digiteCpf = new JLabel("Digite o CPF do remetente: ");
+    private JLabel nomeRemetente = new JLabel("Remetente: ");
+    private JLabel dest = new JLabel("Informações do destinatário: ");
+    private JLabel nomeDestinatario = new JLabel("Nome: ");
+    private JLabel cep = new JLabel("CEP: ");
+    private JLabel complemento = new JLabel("Complemento: ");
+    private JLabel nmrCasa = new JLabel("Número da casa: ");
+
     public Janela()
     {
         super("Correios");
@@ -30,7 +41,24 @@ public class Janela extends JFrame {
 
         Dimension size = tab.getSize();
 
+        //ler
+
+        nomeRemetente.setBounds(10, 500, 30, 2);
+
+
+        ler.add(digiteCpf);
         ler.add(teste);
+        ler.add(procurarRemetente);
+
+        ler.add(nomeRemetente);
+        ler.add(dest);
+        ler.add(nomeDestinatario);
+        ler.add(cep);
+        ler.add(complemento);
+        ler.add(nmrCasa);
+
+
+
 
     }
 }
