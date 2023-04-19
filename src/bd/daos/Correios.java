@@ -6,15 +6,15 @@ import bd.core.*;
 import bd.dbos.*;
 public class Correios
 {
-    public static boolean cadastrado(String idCPF) throws Exception {
+    public static boolean cadastrado(int id) throws Exception {
         boolean retorno = false;
         try {
             String sql;
             sql = "SELECT * "
                     + "FROM CorreioEntrega"
-                    + "WHERE idCPF = ?;";
+                    + "WHERE idCorreio = ?;";
             BDSQLServer.COMANDO.prepareStatement(sql);
-            BDSQLServer.COMANDO.setString(1, idCPF);
+            BDSQLServer.COMANDO.setInt(1, id);
             MeuResultSet resultado = (MeuResultSet) BDSQLServer.COMANDO.executeQuery();
             retorno = resultado.first();
         } catch (SQLException erro) {
@@ -30,17 +30,18 @@ public class Correios
         {
             String sql;
             sql = "INSERT INTO CorreioEntrega" +
-                    "(idCPF, nomeRemetente, nomeDestinatario, cep, complemento, nmrCasa)" +
+                    "(idCorreio, cpf, nomeRemetente, nomeDestinatario, cep, complemento, nmrCasa)" +
                     "VALUES" +
-                    "(?,?,?,?,?,?)";
+                    "(?,?,?,?,?,?,?)";
             BDSQLServer.COMANDO.prepareStatement(sql);
 
-            BDSQLServer.COMANDO.setString(1, correio.getCPF());
-            BDSQLServer.COMANDO.setString(2, correio.getNomeRemetente());
-            BDSQLServer.COMANDO.setString(3, correio.getNomeDestinatario());
-            BDSQLServer.COMANDO.setString(4, correio.getCep());
-            BDSQLServer.COMANDO.setString(5, correio.getComplemento());
-            BDSQLServer.COMANDO.setInt(6, correio.getNmrCasa());
+            BDSQLServer.COMANDO.setInt(1, correio.getId());
+            BDSQLServer.COMANDO.setString(2, correio.getCPF());
+            BDSQLServer.COMANDO.setString(3, correio.getNomeRemetente());
+            BDSQLServer.COMANDO.setString(4, correio.getNomeDestinatario());
+            BDSQLServer.COMANDO.setString(5, correio.getCep());
+            BDSQLServer.COMANDO.setString(6, correio.getComplemento());
+            BDSQLServer.COMANDO.setInt(7, correio.getNmrCasa());
 
             BDSQLServer.COMANDO.executeUpdate();
             BDSQLServer.COMANDO.commit();
@@ -51,17 +52,17 @@ public class Correios
         }
     }
 
-    public static void excluir(String idCPF) throws Exception
+    public static void excluir(int id) throws Exception
     {
-        if(!(cadastrado(idCPF)))
-            throw new Exception("CPF não cadastrado!");
+        if(!(cadastrado(id)))
+            throw new Exception("id não cadastrado!");
         try
         {
             String sql = "";
             sql = "DELETE FROM CorreioEntrega" +
-                    "WHERE idCPF=?";
+                    "WHERE idCorreio=?";
             BDSQLServer.COMANDO.prepareStatement(sql);
-            BDSQLServer.COMANDO.setString(1, idCPF);
+            BDSQLServer.COMANDO.setInt(1, id);
 
             BDSQLServer.COMANDO.executeUpdate();
             BDSQLServer.COMANDO.commit();
@@ -76,23 +77,25 @@ public class Correios
     {
         if(correio==null)
             throw new Exception("Informações não fornecidas. Verifique novamente!");
-        if(!(cadastrado(correio.getCPF())))
-            throw new Exception("CPF não cadastrado!");
+        if(!(cadastrado(correio.getId())))
+            throw new Exception("Id não cadastrado!");
         try {
             String sql = "";
             sql = "UPDATE CorreioEntrega " +
-                    "SET nomeRemetente = ?, " +
+                    "SET cpf = ?" +
+                    "nomeRemetente = ?, " +
                     "nomeDestinatario = ? " +
                     "cep = ?" +
                     "complemento = ?" +
                     "nmrCasa = ?" +
-                    "WHERE idCPF = ?;";
+                    "WHERE idCorreio = ?;";
             BDSQLServer.COMANDO.prepareStatement(sql);
-            BDSQLServer.COMANDO.setString(1, correio.getNomeRemetente());
-            BDSQLServer.COMANDO.setString(2, correio.getNomeDestinatario());
-            BDSQLServer.COMANDO.setString(3, correio.getCep());
-            BDSQLServer.COMANDO.setString(4, correio.getComplemento());
-            BDSQLServer.COMANDO.setInt(   5, correio.getNmrCasa());
+            BDSQLServer.COMANDO.setString(1, correio.getCPF());
+            BDSQLServer.COMANDO.setString(2, correio.getNomeRemetente());
+            BDSQLServer.COMANDO.setString(3, correio.getNomeDestinatario());
+            BDSQLServer.COMANDO.setString(4, correio.getCep());
+            BDSQLServer.COMANDO.setString(5, correio.getComplemento());
+            BDSQLServer.COMANDO.setInt(   6, correio.getNmrCasa());
 
             BDSQLServer.COMANDO.executeUpdate();
             BDSQLServer.COMANDO.commit();
@@ -104,7 +107,7 @@ public class Correios
         }
     }
 
-    public static Correio getCorreio(String cpf) throws Exception
+    public static Correio getCorreio(int id) throws Exception
     {
         Correio correio;
         try {
@@ -112,13 +115,14 @@ public class Correios
 
             sql = "SELECT *" +
                     "FROM CorreioEntrega" +
-                    "WHERE idCPF = ?";
+                    "WHERE idCorreio = ?";
             BDSQLServer.COMANDO.prepareStatement(sql);
-            BDSQLServer.COMANDO.setString(1, cpf);
+            BDSQLServer.COMANDO.setInt(1, id);
 
             MeuResultSet resultSet = (MeuResultSet) BDSQLServer.COMANDO.executeQuery();
 
-            correio = new Correio(resultSet.getString("idCPF"),
+            correio = new Correio(resultSet.getInt("idCorreio"),
+                    resultSet.getString("CPF"),
                     resultSet.getString("nomeRemetente"),
                     resultSet.getString("nomeDestinatario"),
                     resultSet.getString("cep"),

@@ -1,6 +1,7 @@
 package bd.dbos;
 public class Correio implements Cloneable
 {
+    private int idCorreio;
     private String cpf;
     private String nomeRemetente;
     private String nomeDestinatario;
@@ -8,6 +9,16 @@ public class Correio implements Cloneable
     private String complemento;
     private int nmrCasa;
 
+    public void setId(int id) throws Exception
+    {
+        if(Integer.toString(id).length()>1)
+        throw new Exception("Tamanho inválido");
+
+        if(Integer.toString(id) == null || Integer.toString(id).equals(""))
+        throw new Exception("O id da entrega não foi digitado");
+
+        this.idCorreio = id;
+    }
 
     public void setCPF(String cpf) throws Exception
     {
@@ -104,8 +115,14 @@ public class Correio implements Cloneable
         return this.nmrCasa;
     }
 
-    public Correio(String cpf, String nomeRemetente, String nomeDestinatario, String cep, String complemento, int nmrCasa) throws Exception
+    public Integer getId()
     {
+        return this.idCorreio;
+    }
+
+    public Correio(int id, String cpf, String nomeRemetente, String nomeDestinatario, String cep, String complemento, int nmrCasa) throws Exception
+    {
+        this.setId(id);
         this.setCPF(cpf);
         this.setNomeRemetente(nomeRemetente);
         this.setNomeDestinatario(nomeDestinatario);
@@ -117,6 +134,7 @@ public class Correio implements Cloneable
     public String toString()
     {
         String ret = "";
+        ret+="Id: " +this.idCorreio+"\n";
         ret+="CPF: "+this.cpf+"\n";
         ret+="nome do Remetente: "+this.nomeRemetente+"\n";
         ret+="nome do Destinatario: "+this.nomeDestinatario+"\n";
@@ -137,6 +155,8 @@ public class Correio implements Cloneable
 
         Correio correio = (Correio) obj;
 
+        if(this.idCorreio != correio.idCorreio) return false;
+
         if(this.cpf != correio.cpf) return false;
 
         if(!(this.nomeRemetente.equals(correio.nomeRemetente))) return false;
@@ -155,6 +175,7 @@ public class Correio implements Cloneable
     public int hashCode()
     {
         int ret = 666;
+        ret = ret * 13 + Integer.valueOf(this.idCorreio).hashCode();
         ret = ret * 13 + this.cpf.hashCode();
         ret = ret * 13 + this.nomeRemetente.hashCode();
         ret = ret * 13 + this.nomeDestinatario.hashCode();
@@ -170,6 +191,7 @@ public class Correio implements Cloneable
         if(modelo == null)
             throw new Exception("Modelo inexistente");
 
+        this.idCorreio = modelo.idCorreio;
         this.cpf = modelo.cpf;
         this.nomeRemetente = modelo.nomeRemetente;
         this.nomeDestinatario = modelo.nomeDestinatario;
