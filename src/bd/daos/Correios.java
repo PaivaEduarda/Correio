@@ -30,18 +30,17 @@ public class Correios
         {
             String sql;
             sql = "INSERT INTO CorreioEntrega" +
-                    "(idCorreio, cpf, nomeRemetente, nomeDestinatario, cep, complemento, nmrCasa)" +
+                    "(cpf, nomeRemetente, nomeDestinatario, cep, complemento, nmrCasa)" +
                     "VALUES" +
-                    "(?,?,?,?,?,?,?)";
+                    "(?,?,?,?,?,?)";
             BDSQLServer.COMANDO.prepareStatement(sql);
 
-            BDSQLServer.COMANDO.setInt(1, correio.getId());
-            BDSQLServer.COMANDO.setString(2, correio.getCPF());
-            BDSQLServer.COMANDO.setString(3, correio.getNomeRemetente());
-            BDSQLServer.COMANDO.setString(4, correio.getNomeDestinatario());
-            BDSQLServer.COMANDO.setString(5, correio.getCep());
-            BDSQLServer.COMANDO.setString(6, correio.getComplemento());
-            BDSQLServer.COMANDO.setInt(7, correio.getNmrCasa());
+            BDSQLServer.COMANDO.setString(1, correio.getCPF());
+            BDSQLServer.COMANDO.setString(2, correio.getNomeRemetente());
+            BDSQLServer.COMANDO.setString(3, correio.getNomeDestinatario());
+            BDSQLServer.COMANDO.setString(4, correio.getCep());
+            BDSQLServer.COMANDO.setString(5, correio.getComplemento());
+            BDSQLServer.COMANDO.setInt(6, correio.getNmrCasa());
 
             BDSQLServer.COMANDO.executeUpdate();
             BDSQLServer.COMANDO.commit();
@@ -55,7 +54,7 @@ public class Correios
     public static void excluir(int id) throws Exception
     {
         if(!(cadastrado(id)))
-            throw new Exception("id não cadastrado!");
+            throw new Exception("Código de rastreio não cadastrado!");
         try
         {
             String sql = "";
@@ -121,7 +120,8 @@ public class Correios
 
             MeuResultSet resultSet = (MeuResultSet) BDSQLServer.COMANDO.executeQuery();
 
-            correio = new Correio(resultSet.getInt("idCorreio"),
+            correio = new Correio(
+                    resultSet.getInt(1),
                     resultSet.getString("CPF"),
                     resultSet.getString("nomeRemetente"),
                     resultSet.getString("nomeDestinatario"),

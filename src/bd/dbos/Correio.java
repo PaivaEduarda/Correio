@@ -9,17 +9,6 @@ public class Correio implements Cloneable
     private String complemento;
     private int nmrCasa;
 
-    public void setId(int id) throws Exception
-    {
-        if(Integer.toString(id).length()>1)
-        throw new Exception("Tamanho inválido");
-
-        if(Integer.toString(id) == null || Integer.toString(id).equals(""))
-        throw new Exception("O id da entrega não foi digitado");
-
-        this.idCorreio = id;
-    }
-
     public void setCPF(String cpf) throws Exception
     {
         if(cpf.length() != 11)
@@ -120,9 +109,9 @@ public class Correio implements Cloneable
         return this.idCorreio;
     }
 
-    public Correio(int id, String cpf, String nomeRemetente, String nomeDestinatario, String cep, String complemento, int nmrCasa) throws Exception
+    public Correio( int id, String cpf, String nomeRemetente, String nomeDestinatario, String cep, String complemento, int nmrCasa) throws Exception
     {
-        this.setId(id);
+        idCorreio = id;
         this.setCPF(cpf);
         this.setNomeRemetente(nomeRemetente);
         this.setNomeDestinatario(nomeDestinatario);
@@ -134,7 +123,7 @@ public class Correio implements Cloneable
     public String toString()
     {
         String ret = "";
-        ret+="Id: " +this.idCorreio+"\n";
+        ret+="Código de rastreio: " +this.idCorreio+"\n";
         ret+="CPF: "+this.cpf+"\n";
         ret+="nome do Remetente: "+this.nomeRemetente+"\n";
         ret+="nome do Destinatario: "+this.nomeDestinatario+"\n";

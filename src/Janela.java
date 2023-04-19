@@ -1,12 +1,14 @@
 import bd.core.MeuResultSet;
 import bd.daos.Correios;
 import bd.dbos.Correio;
+import Endereco.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class Janela extends JFrame {
+    //Logradouro agencia = (Logradouro) ClienteWS.getObjeto(Logradouro.class, "https://api.postmon.com.br/v1/cep", "13058442");
     private JTabbedPane tab = new JTabbedPane();
     //panels
     private JPanel ler                = new JPanel();
@@ -120,6 +122,8 @@ public class Janela extends JFrame {
     private JLabel updateComplemento = new JLabel("Complemento: ");
     private JLabel updateNmrCasa = new JLabel("Número da casa:");
 
+    private ArrayList<Correio> vetorCorreio = new ArrayList<>();
+
     public Janela()
     {
         super("Correios");
@@ -127,6 +131,17 @@ public class Janela extends JFrame {
         super.setVisible(true);
         super.add(tab);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        try {
+            var result = Correios.getCorreio();
+            while (result.next())
+            {
+                Correio correio = new Correio(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), result.getString(5), result.getString(6), result.getInt(7));
+                vetorCorreio.add(correio);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         ler.setLayout(null);
         adicionar.setLayout(null);
@@ -146,18 +161,18 @@ public class Janela extends JFrame {
         procurarEntrega.setBounds(220, 60, 100, 20);
 
         infoRemetente.setBounds(140, 110, 200, 20);
-        cpfRemetente.setBounds(10, 140, 100, 20);
-        nomeRemetente.setBounds(10, 170, 100, 20);
+        cpfRemetente.setBounds(10, 140, 200, 20);
+        nomeRemetente.setBounds(10, 170, 300, 20);
 
-        dest.setBounds(140, 200, 200, 20);
+        dest.setBounds(140, 200, 300, 20);
         nomeDestinatario.setBounds(10, 230, 100, 20);
         cep.setBounds(10, 260, 100, 20);
-        logradouro.setBounds(10, 290, 200, 20);
-        bairro.setBounds(10, 320, 150, 20);
-        cidade.setBounds(10, 350, 150, 20);
-        estado.setBounds(10, 380, 150, 20);
-        complemento.setBounds(10, 410, 150, 20);
-        nmrCasa.setBounds(10, 440, 150, 20);
+        logradouro.setBounds(10, 290, 300, 20);
+        bairro.setBounds(10, 320, 300, 20);
+        cidade.setBounds(10, 350, 300, 20);
+        estado.setBounds(10, 380, 300, 20);
+        complemento.setBounds(10, 410, 300, 20);
+        nmrCasa.setBounds(10, 440, 200, 20);
 
         ler.add(digiteCodigo);
         ler.add(txtCodigo);
@@ -178,7 +193,36 @@ public class Janela extends JFrame {
         ler.add(complemento);
         ler.add(nmrCasa);
 
+        procurarEntrega.addActionListener(e ->{
+            try{
+                for(var cr : vetorCorreio)
+                {
+                    if(txtCodigo.getText().equals(cr.getId().toString()))
+                    {
+                        cpfRemetente.setText("CPF: " + cr.getCPF());
+                        nomeRemetente.setText("Nome: " + cr.getNomeRemetente());
+                        nomeDestinatario.setText("Nome: " + cr.getNomeDestinatario());
+                        cep.setText("Cep: " + cr.getCep());
+                        complemento.setText("Complemento: " + cr.getComplemento());
+                        nmrCasa.setText("Número da Casa: " + cr.getNmrCasa());
+
+                        Logradouro agencia = (Logradouro) ClienteWS.getObjeto(Logradouro.class, "https://api.postmon.com.br/v1/cep", cr.getCep());
+
+                        logradouro.setText("Rua: " + agencia.getLogradouro());
+                        bairro.setText("Bairro: " + agencia.getBairro());
+                        cidade.setText("Cidade: " + agencia.getCidade());
+                        estado.setText("Estado: " + agencia.getEstado());
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                JOptionPane.showMessageDialog(null, err.getMessage());
+            }
+        });
+
         //adicionar
+
         addCodigo.setBounds(10,10,200,20);
 
         addInfoRemetente.setBounds(140,40,200,20);
@@ -217,6 +261,11 @@ public class Janela extends JFrame {
 
         btnAdicionar.setBounds(140, 440, 200, 20);
 
+        addTxtEstado.setEditable(false);
+        addTxtCidade.setEditable(false);
+        addTxtBairro.setEditable(false);
+        addTxtRua.setEditable(false);
+
         adicionar.add(addCodigo);
         adicionar.add(addInfoRemetente);
         adicionar.add(addCPFRemetente);
@@ -242,6 +291,40 @@ public class Janela extends JFrame {
         adicionar.add(addTxtNmrCasa);
         adicionar.add(btnAdicionar);
 
+        //Ação do botão adicionar
+        btnAdicionar.addActionListener(e -> {
+            try{
+                Correio correio = new Correio(0, addTxtCPFRemetente.getText(), addTxtRemetente.getText(), addTxtNomeDest.getText(), addTxtCep.getText(), addTxtComplemento.getText(), Integer.parseInt(addTxtNmrCasa.getText()));
+                Logradouro agencia = (Logradouro) ClienteWS.getObjeto(Logradouro.class, "https://api.postmon.com.br/v1/cep", addTxtCep.getText());
+                addCodigo.setText("Código de rastreio: " + correio.getId().toString());
+
+                addTxtRua.setText(agencia.getLogradouro());
+                addTxtBairro.setText(agencia.getBairro());
+                addTxtCidade.setText(agencia.getCidade());
+                addTxtEstado.setText(agencia.getEstado());
+
+                String[] options = {"Sim", "Não"};
+
+                int x = JOptionPane.showOptionDialog(null, "Código de rasteio: " + correio.getId().toString() + "\n" + "\n" +  "INFORMAÇÕES DO REMETENTE: " + "\n" + "\n" +  "CPF: " + addTxtCPFRemetente.getText() + "\n" + "Nome: " + addTxtRemetente.getText() + "\n" + "\n" +"INFORMAÇÕES DO DESTINATÁRIO: " + "\n" + "\n" + "Nome: " + addTxtNomeDest.getText()
+                                + "\n" + "Cep: " + addTxtCep.getText() + "\n" + "Rua: " + addTxtRua.getText() + "\n" + "Cidade: " + addTxtCidade.getText() + "\n" +  "Estado: " + addTxtBairro.getText() + "\n" + "Complemento: " + addTxtComplemento.getText() + "\n" + "Número da Casa: " + addTxtNmrCasa.getText() + "\n", "Revise as informações da entrega:",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+                System.out.println(x);
+
+                if(x == 0)
+                {
+                    if (correio != null) {
+                        vetorCorreio.add(correio);
+                        Correios.incluir(correio);
+                    }
+                    JOptionPane.showMessageDialog(null, "Entrega incluida com sucesso!");
+                }
+            }
+            catch (Exception erro)
+            {
+                JOptionPane.showMessageDialog(null, erro.getMessage());
+            }
+        });
+
         //deletar
 
         deletarDigiteCodigo.setBounds(10, 20, 200, 20);
@@ -249,17 +332,17 @@ public class Janela extends JFrame {
         btnProcurarDeletar.setBounds(220, 60, 100, 20);
 
         deletarInfoRemetente.setBounds(140, 110, 200, 20);
-        deletarCPFRemetente.setBounds(10, 140, 100, 20);
-        deletarNomeRemetente.setBounds(10, 170, 100, 20);
+        deletarCPFRemetente.setBounds(10, 140, 200, 20);
+        deletarNomeRemetente.setBounds(10, 170, 300, 20);
 
-        deletarDest.setBounds(140, 200, 200, 20);
-        deletarNomeDestinatario.setBounds(10, 230, 100, 20);
-        deletarCep.setBounds(10, 260, 100, 20);
-        deletarLogradouro.setBounds(10, 290, 200, 20);
-        deletarBairro.setBounds(10, 320, 150, 20);
-        deletarCidade.setBounds(10, 350, 150, 20);
-        deletarEstado.setBounds(10, 380, 150, 20);
-        deletarComplemento.setBounds(10, 410, 150, 20);
+        deletarDest.setBounds(140, 200, 300, 20);
+        deletarNomeDestinatario.setBounds(10, 230, 300, 20);
+        deletarCep.setBounds(10, 260, 200, 20);
+        deletarLogradouro.setBounds(10, 290, 300, 20);
+        deletarBairro.setBounds(10, 320, 300, 20);
+        deletarCidade.setBounds(10, 350, 300, 20);
+        deletarEstado.setBounds(10, 380, 300, 20);
+        deletarComplemento.setBounds(10, 410, 300, 20);
         deletarNmrCasa.setBounds(10, 440, 150, 20);
 
         btnDeletar.setBounds(140, 470, 150, 20);
@@ -284,6 +367,46 @@ public class Janela extends JFrame {
         deletar.add(deletarNmrCasa);
 
         deletar.add(btnDeletar);
+
+        btnProcurarDeletar.addActionListener(e -> {
+                    try {
+                        for (var cr : vetorCorreio) {
+                            if (deleteTxtCodigo.getText().equals(cr.getId().toString())) {
+                                deletarCPFRemetente.setText("CPF: " + cr.getCPF());
+                                deletarNomeRemetente.setText("Nome: " + cr.getNomeRemetente());
+                                deletarNomeDestinatario.setText("Nome: " + cr.getNomeDestinatario());
+                                deletarCep.setText("Cep: " + cr.getCep());
+                                deletarComplemento.setText("Complemento: " + cr.getComplemento());
+                                deletarNmrCasa.setText("Número da Casa: " + cr.getNmrCasa());
+
+                                Logradouro agencia = (Logradouro) ClienteWS.getObjeto(Logradouro.class, "https://api.postmon.com.br/v1/cep", cr.getCep());
+
+                                deletarLogradouro.setText("Rua: " + agencia.getLogradouro());
+                                deletarBairro.setText("Bairro: " + agencia.getBairro());
+                                deletarCidade.setText("Cidade: " + agencia.getCidade());
+                                deletarEstado.setText("Estado: " + agencia.getEstado());
+                            }
+                        }
+                    }
+                    catch (Exception erro)
+                    {
+                        JOptionPane.showMessageDialog(null, erro.getMessage());
+                    }
+                });
+        btnDeletar.addActionListener(e -> {
+            try{
+                Correio correio = new Correio(0, addTxtCPFRemetente.getText(), addTxtRemetente.getText(), addTxtNomeDest.getText(), addTxtCep.getText(), addTxtComplemento.getText(), Integer.parseInt(addTxtNmrCasa.getText()));
+                if (correio != null) {
+                    vetorCorreio.remove(correio);
+                    Correios.excluir(Integer.parseInt(deleteTxtCodigo.getText()));
+                }
+
+                JOptionPane.showMessageDialog(null, "Entrega cancelada com sucesso!");
+            }
+            catch (Exception erro)
+            {
+                JOptionPane.showMessageDialog(null, "Erro ao cancelar a entrega!");
+            }        });
 
         //update
         updateCodigo.setBounds(10,10,130,20);
@@ -353,6 +476,60 @@ public class Janela extends JFrame {
         atualizar.add(updateNmrCasa);
         atualizar.add(updateTxtNmrCasa);
         atualizar.add(updateAdicionar);
-        
+
+        updateTxtEstado.setEditable(false);
+        updateTxtRua.setEditable(false);
+        updateTxtCidade.setEditable(false);
+        updateTxtBairro.setEditable(false);
+
+        //Ação do botão atualizar
+        updateProcurarEntrega.addActionListener(e -> {
+            try{
+                for(var cr : vetorCorreio)
+                {
+                    if(updatetxtCodigo.getText().equals(cr.getId().toString()))
+                    {
+                        updateTxtCPFRemetente.setText(cr.getCPF());
+                        updateTxtRemet.setText(cr.getNomeRemetente());
+                        updateTxtNomeDest.setText(cr.getNomeDestinatario());
+                        updateTxtCep.setText(cr.getCep());
+                        updateTxtComplemento.setText(cr.getComplemento());
+                        updateTxtNmrCasa.setText(cr.getNmrCasa().toString());
+
+                        Logradouro agencia = (Logradouro) ClienteWS.getObjeto(Logradouro.class, "https://api.postmon.com.br/v1/cep", cr.getCep());
+
+                        updateTxtRua.setText("Rua: " + agencia.getLogradouro());
+                        updateTxtBairro.setText("Bairro: " + agencia.getBairro());
+                        updateTxtCidade.setText("Cidade: " + agencia.getCidade());
+                        updateTxtEstado.setText("Estado: " + agencia.getEstado());
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                JOptionPane.showMessageDialog(null, err.getMessage());
+            }
+
+            if(e.getSource() == updateProcurarEntrega)
+            {
+                updatetxtCodigo.setEditable(false);
+            }
+        });
+
+        updateAdicionar.addActionListener(e -> {
+            try{
+                Correio correio = new Correio(0, addTxtCPFRemetente.getText(), addTxtRemetente.getText(), addTxtNomeDest.getText(), addTxtCep.getText(), addTxtComplemento.getText(), Integer.parseInt(addTxtNmrCasa.getText()));
+                if (correio != null) {
+                    vetorCorreio.add(correio);
+                    Correios.alterar(correio);
+                }
+
+                JOptionPane.showMessageDialog(null, "Entrega atualizada com sucesso!");
+            }
+            catch (Exception erro)
+            {
+                JOptionPane.showMessageDialog(null, erro.getMessage());
+            }
+        });
     }
 }
