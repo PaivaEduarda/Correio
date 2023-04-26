@@ -143,7 +143,7 @@ public class Janela extends JFrame {
             }
         }
     }
-    public void encontrarInfo( boolean encontrou )
+    public boolean encontrarInfo( boolean encontrou )
     {
         if(encontrou == false) {
             JOptionPane.showMessageDialog(null, "Entrega não localizada!");
@@ -158,7 +158,9 @@ public class Janela extends JFrame {
             bairro.setText("Bairro: ");
             cidade.setText("Cidade: " );
             estado.setText("Estado: ");
+            return false;
         }
+        return true;
     }
     public Janela()
     {
@@ -415,6 +417,7 @@ public class Janela extends JFrame {
 
         btnProcurarDeletar.addActionListener(e -> {
                     try {
+                        boolean encontrou = false;
                         for (var cr : vetorCorreio) {
                             if (deleteTxtCodigo.getText().equals(cr.getId().toString())) {
                                 deletarCPFRemetente.setText("CPF: " + cr.getCPF());
@@ -430,8 +433,10 @@ public class Janela extends JFrame {
                                 deletarBairro.setText("Bairro: " + agencia.getBairro());
                                 deletarCidade.setText("Cidade: " + agencia.getCidade());
                                 deletarEstado.setText("Estado: " + agencia.getEstado());
+                                encontrou = true;
                             }
                         }
+                        encontrarInfo(encontrou);
                     }
                     catch (Exception erro)
                     {
@@ -539,6 +544,7 @@ public class Janela extends JFrame {
 
         //Ação do botão atualizar
         updateProcurarEntrega.addActionListener(e -> {
+            boolean encontrou = false;
             try{
                 for(var cr : vetorCorreio)
                 {
@@ -557,17 +563,17 @@ public class Janela extends JFrame {
                         updateTxtBairro.setText(agencia.getBairro());
                         updateTxtCidade.setText(agencia.getCidade());
                         updateTxtEstado.setText(agencia.getEstado());
+                        encontrou = true;
+                        updatetxtCodigo.setEditable(false);
                     }
                 }
+                encontrarInfo(encontrou);
+                if ( encontrarInfo(encontrou) == false)
+                    updatetxtCodigo.setEditable(true);
             }
             catch (Exception err)
             {
                 JOptionPane.showMessageDialog(null, err.getMessage());
-            }
-
-            if(e.getSource() == updateProcurarEntrega)
-            {
-                updatetxtCodigo.setEditable(false);
             }
         });
 
