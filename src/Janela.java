@@ -62,11 +62,11 @@ public class Janela extends JFrame {
 
 
     //label do panel ler
-    private JLabel digiteCodigo = new JLabel("Digite o código de rastreio: ");
-    private JLabel infoRemetente = new JLabel("INFORMAÇÕES DO REMETENTE: ");
+    private JLabel digiteCodigo = new JLabel("Digite o codigo de rastreio: ");
+    private JLabel infoRemetente = new JLabel("INFORMACOES DO REMETENTE: ");
     private JLabel cpfRemetente = new JLabel("CPF:");
     private JLabel nomeRemetente = new JLabel("Nome: ");
-    private JLabel dest = new JLabel("INFORMAÇÕES DO DESTINATÁRIO: ");
+    private JLabel dest = new JLabel("INFORMACOES DO DESTINATARIO: ");
     private JLabel nomeDestinatario = new JLabel("Nome: ");
     private JLabel cep = new JLabel("CEP: ");
     private JLabel logradouro = new JLabel("Logradouro: ");
@@ -74,13 +74,13 @@ public class Janela extends JFrame {
     private JLabel cidade = new JLabel("Cidade: ");
     private JLabel estado = new JLabel("Estado: ");
     private JLabel complemento = new JLabel("Complemento: ");
-    private JLabel nmrCasa = new JLabel("Número da casa: ");
+    private JLabel nmrCasa = new JLabel("Numero da casa: ");
     //label do panel adicionar
-    private JLabel addCodigo = new JLabel("Código de rastreio: ");
-    private JLabel addInfoRemetente = new JLabel("INFORMAÇÕES DO REMETENTE: ");
+    private JLabel addCodigo = new JLabel("Codigo de rastreio: ");
+    private JLabel addInfoRemetente = new JLabel("INFORMACOES DO REMETENTE: ");
     private JLabel addCPFRemetente = new JLabel("CPF do remetente: ");
     private JLabel addRemetente = new JLabel("Nome do remetente: ");
-    private JLabel addInfoDestinatario = new JLabel("INFORMAÇÕES DO DESTINATÁRIO: ");
+    private JLabel addInfoDestinatario = new JLabel("INFORMACOES DO DESTINATARIO: ");
     private JLabel addNomeDest = new JLabel("Nome: ");
     private JLabel addCep = new JLabel("Cep: ");
     private JLabel addRua = new JLabel("Logradouro: ");
@@ -88,14 +88,14 @@ public class Janela extends JFrame {
     private JLabel addCidade = new JLabel("Cidade: ");
     private JLabel addEstado = new JLabel("Estado: ");
     private JLabel addComplemento = new JLabel("Complemento: ");
-    private JLabel addNmrCasa = new JLabel("Número da casa:");
+    private JLabel addNmrCasa = new JLabel("Numero da casa:");
 
     //label do panel deletar
-    private JLabel deletarDigiteCodigo = new JLabel("Digite o código de rastreio: ");
-    private JLabel deletarInfoRemetente = new JLabel("INFORMAÇÕES DO REMETENTE: ");
+    private JLabel deletarDigiteCodigo = new JLabel("Digite o codigo de rastreio: ");
+    private JLabel deletarInfoRemetente = new JLabel("INFORMACOES DO REMETENTE: ");
     private JLabel deletarCPFRemetente = new JLabel("CPF:");
     private JLabel deletarNomeRemetente = new JLabel("Nome: ");
-    private JLabel deletarDest = new JLabel("INFORMAÇÕES DO DESTINATÁRIO: ");
+    private JLabel deletarDest = new JLabel("INFORMACOES DO DESTINATARIO: ");
     private JLabel deletarNomeDestinatario = new JLabel("Nome: ");
     private JLabel deletarCep = new JLabel("CEP: ");
     private JLabel deletarLogradouro = new JLabel("Logradouro: ");
@@ -103,15 +103,15 @@ public class Janela extends JFrame {
     private JLabel deletarCidade = new JLabel("Cidade: ");
     private JLabel deletarEstado = new JLabel("Estado: ");
     private JLabel deletarComplemento = new JLabel("Complemento: ");
-    private JLabel deletarNmrCasa = new JLabel("Número da casa: ");
+    private JLabel deletarNmrCasa = new JLabel("Numero da casa: ");
 
     //label do panel atualizar
 
-    private JLabel updateCodigo = new JLabel("Código de rastreio: ");
-    private JLabel updateInfoRemetente = new JLabel("INFORMAÇÕES DO REMETENTE: ");
+    private JLabel updateCodigo = new JLabel("Codigo de rastreio: ");
+    private JLabel updateInfoRemetente = new JLabel("INFORMACOES DO REMETENTE: ");
     private JLabel updateCPFRemetente = new JLabel("CPF do remetente: ");
     private JLabel updateNomeRemetente = new JLabel("Nome do remetente: ");
-    private JLabel updateInfoDestina = new JLabel("INFORMAÇÕES DO DESTINATÁRIO: ");
+    private JLabel updateInfoDestina = new JLabel("INFORMACOES DO DESTINATARIO: ");
     private JLabel updateNomeDest = new JLabel("Nome: ");
     private JLabel updateCep = new JLabel("Cep: ");
 
@@ -120,10 +120,46 @@ public class Janela extends JFrame {
     private JLabel updateCidade = new JLabel("Cidade: ");
     private JLabel updateEstado = new JLabel("Estado: ");
     private JLabel updateComplemento = new JLabel("Complemento: ");
-    private JLabel updateNmrCasa = new JLabel("Número da casa:");
+    private JLabel updateNmrCasa = new JLabel("Numero da casa:");
 
     private ArrayList<Correio> vetorCorreio = new ArrayList<>();
 
+    public void DeletarPorID(int id)
+    {
+        for (int i = 0; i < vetorCorreio.toArray().length; i++) {
+            if (vetorCorreio.get(i).getId() == id) {
+                vetorCorreio.remove(i);
+                break;
+            }
+        }
+    }
+
+    public void AtualizarPorID(int id, Correio correio)
+    {
+        for (int i = 0; i < vetorCorreio.toArray().length; i++) {
+            if (vetorCorreio.get(i).getId() == id) {
+                vetorCorreio.set(i, correio);
+                break;
+            }
+        }
+    }
+    public void encontrarInfo( boolean encontrou )
+    {
+        if(encontrou == false) {
+            JOptionPane.showMessageDialog(null, "Entrega não localizada!");
+            cpfRemetente.setText("CPF: ");
+            nomeRemetente.setText("Nome: " );
+            nomeDestinatario.setText("Nome: " );
+            cep.setText("Cep: " );
+            complemento.setText("Complemento: " );
+            nmrCasa.setText("Número da Casa: ");
+
+            logradouro.setText("Rua: " );
+            bairro.setText("Bairro: ");
+            cidade.setText("Cidade: " );
+            estado.setText("Estado: ");
+        }
+    }
     public Janela()
     {
         super("Correios");
@@ -195,10 +231,10 @@ public class Janela extends JFrame {
 
         procurarEntrega.addActionListener(e ->{
             try{
+                boolean encontrou = false;
                 for(var cr : vetorCorreio)
                 {
-                    if(txtCodigo.getText().equals(cr.getId().toString()))
-                    {
+                    if(txtCodigo.getText().equals(cr.getId().toString())) {
                         cpfRemetente.setText("CPF: " + cr.getCPF());
                         nomeRemetente.setText("Nome: " + cr.getNomeRemetente());
                         nomeDestinatario.setText("Nome: " + cr.getNomeDestinatario());
@@ -212,8 +248,10 @@ public class Janela extends JFrame {
                         bairro.setText("Bairro: " + agencia.getBairro());
                         cidade.setText("Cidade: " + agencia.getCidade());
                         estado.setText("Estado: " + agencia.getEstado());
+                        encontrou = true;
                     }
                 }
+                encontrarInfo(encontrou);
             }
             catch (Exception err)
             {
@@ -294,19 +332,26 @@ public class Janela extends JFrame {
         //Ação do botão adicionar
         btnAdicionar.addActionListener(e -> {
             try{
-                Correio correio = new Correio(0, addTxtCPFRemetente.getText(), addTxtRemetente.getText(), addTxtNomeDest.getText(), addTxtCep.getText(), addTxtComplemento.getText(), Integer.parseInt(addTxtNmrCasa.getText()));
-                Logradouro agencia = (Logradouro) ClienteWS.getObjeto(Logradouro.class, "https://api.postmon.com.br/v1/cep", addTxtCep.getText());
-                addCodigo.setText("Código de rastreio: " + correio.getId().toString());
+                int id = Correios.ultimoId();
+                Correio correio = new Correio(id, addTxtCPFRemetente.getText(), addTxtRemetente.getText(), addTxtNomeDest.getText(), addTxtCep.getText(), addTxtComplemento.getText(), Integer.parseInt(addTxtNmrCasa.getText()));
+                addCodigo.setText("Codigo de rastreio: " + correio.getId().toString());
+                try
+                {
+                    Logradouro agencia = (Logradouro) ClienteWS.getObjeto(Logradouro.class, "https://api.postmon.com.br/v1/cep", addTxtCep.getText());
+                    addTxtRua.setText(agencia.getLogradouro());
+                    addTxtBairro.setText(agencia.getBairro());
+                    addTxtCidade.setText(agencia.getCidade());
+                    addTxtEstado.setText(agencia.getEstado());
+                }
+                catch (Exception erro)
+                {
+                    JOptionPane.showMessageDialog(null, "Cep inválido!! Confira suas informações novamente!");
+                }
 
-                addTxtRua.setText(agencia.getLogradouro());
-                addTxtBairro.setText(agencia.getBairro());
-                addTxtCidade.setText(agencia.getCidade());
-                addTxtEstado.setText(agencia.getEstado());
+                String[] options = {"Sim", "Nao"};
 
-                String[] options = {"Sim", "Não"};
-
-                int x = JOptionPane.showOptionDialog(null, "Código de rasteio: " + correio.getId().toString() + "\n" + "\n" +  "INFORMAÇÕES DO REMETENTE: " + "\n" + "\n" +  "CPF: " + addTxtCPFRemetente.getText() + "\n" + "Nome: " + addTxtRemetente.getText() + "\n" + "\n" +"INFORMAÇÕES DO DESTINATÁRIO: " + "\n" + "\n" + "Nome: " + addTxtNomeDest.getText()
-                                + "\n" + "Cep: " + addTxtCep.getText() + "\n" + "Rua: " + addTxtRua.getText() + "\n" + "Cidade: " + addTxtCidade.getText() + "\n" +  "Estado: " + addTxtBairro.getText() + "\n" + "Complemento: " + addTxtComplemento.getText() + "\n" + "Número da Casa: " + addTxtNmrCasa.getText() + "\n", "Revise as informações da entrega:",
+                int x = JOptionPane.showOptionDialog(null, "Codigo de rasteio: " + correio.getId().toString() + "\n" + "\n" +  "INFORMACOES DO REMETENTE: " + "\n" + "\n" +  "CPF: " + addTxtCPFRemetente.getText() + "\n" + "Nome: " + addTxtRemetente.getText() + "\n" + "\n" +"INFORMACOES DO DESTINATARIO: " + "\n" + "\n" + "Nome: " + addTxtNomeDest.getText()
+                                + "\n" + "Cep: " + addTxtCep.getText() + "\n" + "Rua: " + addTxtRua.getText() + "\n" + "Cidade: " + addTxtCidade.getText() + "\n" +  "Estado: " + addTxtBairro.getText() + "\n" + "Complemento: " + addTxtComplemento.getText() + "\n" + "Numero da Casa: " + addTxtNmrCasa.getText() + "\n", "Revise as informacoes da entrega:",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
                 System.out.println(x);
 
@@ -377,7 +422,7 @@ public class Janela extends JFrame {
                                 deletarNomeDestinatario.setText("Nome: " + cr.getNomeDestinatario());
                                 deletarCep.setText("Cep: " + cr.getCep());
                                 deletarComplemento.setText("Complemento: " + cr.getComplemento());
-                                deletarNmrCasa.setText("Número da Casa: " + cr.getNmrCasa());
+                                deletarNmrCasa.setText("Numero da Casa: " + cr.getNmrCasa());
 
                                 Logradouro agencia = (Logradouro) ClienteWS.getObjeto(Logradouro.class, "https://api.postmon.com.br/v1/cep", cr.getCep());
 
@@ -390,23 +435,33 @@ public class Janela extends JFrame {
                     }
                     catch (Exception erro)
                     {
+                        erro.printStackTrace();
                         JOptionPane.showMessageDialog(null, erro.getMessage());
                     }
                 });
         btnDeletar.addActionListener(e -> {
             try{
-                Correio correio = new Correio(0, addTxtCPFRemetente.getText(), addTxtRemetente.getText(), addTxtNomeDest.getText(), addTxtCep.getText(), addTxtComplemento.getText(), Integer.parseInt(addTxtNmrCasa.getText()));
-                if (correio != null) {
-                    vetorCorreio.remove(correio);
-                    Correios.excluir(Integer.parseInt(deleteTxtCodigo.getText()));
-                }
+                DeletarPorID(Integer.parseInt(deleteTxtCodigo.getText()));
+                Correios.excluir(Integer.parseInt(deleteTxtCodigo.getText()));
 
                 JOptionPane.showMessageDialog(null, "Entrega cancelada com sucesso!");
+                deletarCPFRemetente.setText("CPF: ");
+                deletarNomeRemetente.setText("Nome: " );
+                deletarNomeDestinatario.setText("Nome: " );
+                deletarCep.setText("Cep: " );
+                deletarComplemento.setText("Complemento: " );
+                deletarNmrCasa.setText("Número da Casa: ");
+
+                deletarLogradouro.setText("Rua: " );
+                deletarBairro.setText("Bairro: ");
+                deletarCidade.setText("Cidade: " );
+                deletarEstado.setText("Estado: ");
             }
             catch (Exception erro)
             {
-                JOptionPane.showMessageDialog(null, "Erro ao cancelar a entrega!");
-            }        });
+                JOptionPane.showMessageDialog(null, erro);
+            }
+        });
 
         //update
         updateCodigo.setBounds(10,10,130,20);
@@ -498,10 +553,10 @@ public class Janela extends JFrame {
 
                         Logradouro agencia = (Logradouro) ClienteWS.getObjeto(Logradouro.class, "https://api.postmon.com.br/v1/cep", cr.getCep());
 
-                        updateTxtRua.setText("Rua: " + agencia.getLogradouro());
-                        updateTxtBairro.setText("Bairro: " + agencia.getBairro());
-                        updateTxtCidade.setText("Cidade: " + agencia.getCidade());
-                        updateTxtEstado.setText("Estado: " + agencia.getEstado());
+                        updateTxtRua.setText(agencia.getLogradouro());
+                        updateTxtBairro.setText(agencia.getBairro());
+                        updateTxtCidade.setText(agencia.getCidade());
+                        updateTxtEstado.setText(agencia.getEstado());
                     }
                 }
             }
@@ -518,9 +573,9 @@ public class Janela extends JFrame {
 
         updateAdicionar.addActionListener(e -> {
             try{
-                Correio correio = new Correio(0, addTxtCPFRemetente.getText(), addTxtRemetente.getText(), addTxtNomeDest.getText(), addTxtCep.getText(), addTxtComplemento.getText(), Integer.parseInt(addTxtNmrCasa.getText()));
+                Correio correio = new Correio(Integer.parseInt(updatetxtCodigo.getText()), updateTxtCPFRemetente.getText(), updateTxtRemet.getText(), updateTxtNomeDest.getText(), updateTxtCep.getText(), updateTxtComplemento.getText(), Integer.parseInt(updateTxtNmrCasa.getText()));
                 if (correio != null) {
-                    vetorCorreio.add(correio);
+                    AtualizarPorID(Integer.parseInt(updatetxtCodigo.getText()), correio);
                     Correios.alterar(correio);
                 }
 

@@ -5,16 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fbdf2484-2f6f-4661-8418-28434e12e013" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Correio.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Correio.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Endereco/InfoCidade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Endereco/InfoCidade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Endereco/InfoEstado.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Endereco/InfoEstado.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Endereco/Logradouro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Endereco/Logradouro.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Janela.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Janela.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bd/BDSQLServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bd/BDSQLServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bd/daos/Correios.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bd/daos/Correios.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bd/dbos/Correio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bd/dbos/Correio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabelas.sql" beforeDir="false" afterPath="$PROJECT_DIR$/tabelas.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +29,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/u22125/Documents/GitHub/Correio/sqljdbc4.jar",
+    "last_opened_file_path": "C:/Users/u22127/Documents/GitHub/Correio",
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.0"
@@ -71,23 +64,9 @@
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Janela.java</url>
-          <line>400</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Janela.java</url>
-          <line>396</line>
-          <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/bd/daos/Correios.java</url>
-          <line>53</line>
-          <properties class="bd.daos.Correios" method="excluir">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="11" />
+          <line>13</line>
+          <option name="timeStamp" value="21" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

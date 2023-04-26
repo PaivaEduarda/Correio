@@ -11,7 +11,7 @@ public class Correios
         try {
             String sql;
             sql = "SELECT * "
-                    + "FROM CorreioEntrega"
+                    + "FROM CorreioEntrega "
                     + "WHERE idCorreio = ?;";
             BDSQLServer.COMANDO.prepareStatement(sql);
             BDSQLServer.COMANDO.setInt(1, id);
@@ -58,8 +58,8 @@ public class Correios
         try
         {
             String sql = "";
-            sql = "DELETE FROM CorreioEntrega" +
-                    "WHERE idCorreio=?";
+            sql = "DELETE FROM CorreioEntrega " +
+                    "WHERE idCorreio = ?;";
             BDSQLServer.COMANDO.prepareStatement(sql);
             BDSQLServer.COMANDO.setInt(1, id);
 
@@ -69,7 +69,29 @@ public class Correios
         catch (SQLException erro)
         {
             BDSQLServer.COMANDO.rollback();
-            throw new Exception("Erro ao excluir a entrega!");
+            throw new Exception(erro);
+        }
+    }
+    public static int ultimoId() throws Exception
+    {
+        try{
+            int id = 0;
+            String sql = "";
+            sql = "select MAX(idCorreio) " +
+                    "as ID from CorreioEntrega" ;
+            BDSQLServer.COMANDO.prepareStatement(sql);
+
+            MeuResultSet resultSet = (MeuResultSet) BDSQLServer.COMANDO.executeQuery();
+
+            if (resultSet.first())
+                id = resultSet.getInt("ID");
+
+            return id + 1;
+        }
+        catch (SQLException erro)
+        {
+            BDSQLServer.COMANDO.rollback();
+            throw new Exception(erro);
         }
     }
     public static void alterar(Correio correio) throws  Exception
@@ -81,12 +103,12 @@ public class Correios
         try {
             String sql = "";
             sql = "UPDATE CorreioEntrega " +
-                    "SET cpf = ?" +
+                    "SET cpf = ?," +
                     "nomeRemetente = ?, " +
-                    "nomeDestinatario = ? " +
-                    "cep = ?" +
-                    "complemento = ?" +
-                    "nmrCasa = ?" +
+                    "nomeDestinatario = ?, " +
+                    "cep = ?," +
+                    "complemento = ?," +
+                    "nmrCasa = ? " +
                     "WHERE idCorreio = ?;";
             BDSQLServer.COMANDO.prepareStatement(sql);
             BDSQLServer.COMANDO.setString(1, correio.getCPF());
@@ -95,6 +117,8 @@ public class Correios
             BDSQLServer.COMANDO.setString(4, correio.getCep());
             BDSQLServer.COMANDO.setString(5, correio.getComplemento());
             BDSQLServer.COMANDO.setInt(   6, correio.getNmrCasa());
+            BDSQLServer.COMANDO.setInt(   7, correio.getId());
+
 
             BDSQLServer.COMANDO.executeUpdate();
             BDSQLServer.COMANDO.commit();
